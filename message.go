@@ -2,7 +2,6 @@ package message
 
 import (
 	"github.com/dist-ribut-us/log"
-	"github.com/dist-ribut-us/rnet"
 	"github.com/dist-ribut-us/serial"
 	"github.com/golang/protobuf/proto"
 )
@@ -96,14 +95,6 @@ func (h *Header) SetType(t Type) {
 	h.Type32 = uint32(t)
 }
 
-// Port gets the Port from the Addr
-func (h *Header) Port() rnet.Port {
-	if h == nil || h.Addrpb == nil {
-		return rnet.Port(0)
-	}
-	return rnet.Port(h.Addrpb.Port32)
-}
-
 // CheckFlag checks if a bit flag is set
 func (h *Header) CheckFlag(flag BitFlag) bool {
 	return h.Flags&uint32(flag) == uint32(flag)
@@ -122,15 +113,6 @@ func (h *Header) IsResponse() bool {
 // SetFlag sets a bit in the flag field
 func (h *Header) SetFlag(flag BitFlag) {
 	h.Flags |= uint32(flag)
-}
-
-// SetAddr populates the Addrpb field
-func (h *Header) SetAddr(addr *rnet.Addr) {
-	h.Addrpb = &AddrPB{
-		Ip:     addr.IP,
-		Port32: uint32(addr.UDPAddr.Port),
-		Zone:   addr.Zone,
-	}
 }
 
 // BodyToUint32 uses dist.ribut.us/serial to Unmarshal the body.
