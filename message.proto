@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package message;
+
+message Header{
+  uint32 type32  = 1;
+  uint32 service = 2;
+  uint32 flags   = 3;
+  AddrPB addrpb  = 4;
+  bytes  body    = 6;
+  uint32 id      = 7;
+}
+
+message AddrPB{
+	bytes  ip     = 1;
+	uint32 port32 = 2;
+	string zone   = 3;
+}
