@@ -2,6 +2,7 @@ package message
 
 import (
 	"github.com/dist-ribut-us/log"
+	"github.com/dist-ribut-us/rnet"
 	"github.com/dist-ribut-us/serial"
 	"github.com/golang/protobuf/proto"
 )
@@ -9,11 +10,12 @@ import (
 // BitFlag is used to set flags on the header flag field
 type BitFlag uint32
 
+// Flag masks Flags field
 const (
-	// QueryFlag is applied to a type if it is a query type
 	QueryFlag = BitFlag(1 << (iota))
-	// ResponseFlag is applied to a type if it is a response type
 	ResponseFlag
+	FromNet
+	ToNet
 )
 
 // Type for message header
@@ -29,6 +31,9 @@ const (
 	Ping
 	NetSend
 	NetReceive
+	AddBeacon
+	GetPubKey
+	Die
 )
 
 // NewHeader takes a type and a body. See SetBody for valid body types
@@ -80,7 +85,6 @@ func (h *Header) SetBody(body interface{}) *Header {
 		if !log.Error(err) {
 			h.Body = buf
 		}
-
 	}
 	return h
 }
@@ -110,6 +114,11 @@ func (h *Header) IsResponse() bool {
 	return h.CheckFlag(ResponseFlag)
 }
 
+// IsFromNet checks if the FromNet flag is set
+func (h *Header) IsFromNet() bool {
+	return h.CheckFlag(FromNet)
+}
+
 // SetFlag sets a bit in the flag field
 func (h *Header) SetFlag(flag BitFlag) {
 	h.Flags |= uint32(flag)
@@ -126,4 +135,32 @@ func (h *Header) BodyToUint32() uint32 {
 // BodyString returns the body as a string
 func (h *Header) BodyString() string {
 	return string(h.Body)
+}
+
+// SetAddr sets the underlying Addrpb struct in the Header
+func (h *Header) SetAddr(addr *rnet.Addr) *Header {
+	h.Addrpb = FromAddr(addr)
+	return h
+}
+
+// FromAddr creates and Addrpb from an rnet.Addr
+func FromAddr(addr *rnet.Addr) *Addrpb {
+	return &Addrpb{
+		Ip:   addr.IP,
+		Port: uint32(addr.UDPAddr.Port),
+		Zone: addr.Zone,
+	}
+}
+
+// GetAddr returns the Addrpb as an rnet.Addr
+func (h *Header) GetAddr() *rnet.Addr {
+	if h.Addrpb == nil {
+		return nil
+	}
+	return h.Addrpb.GetAddr()
+}
+
+// GetAddr returns the Addrpb as an rnet.Addr
+func (a *Addrpb) GetAddr() *rnet.Addr {
+	return rnet.NewAddr(a.Ip, int(a.Port), a.Zone)
 }
