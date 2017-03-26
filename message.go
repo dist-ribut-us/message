@@ -1,6 +1,7 @@
 package message
 
 import (
+	"github.com/dist-ribut-us/crypto"
 	"github.com/dist-ribut-us/log"
 	"github.com/dist-ribut-us/rnet"
 	"github.com/dist-ribut-us/serial"
@@ -40,6 +41,7 @@ const (
 func NewHeader(t Type, body interface{}) *Header {
 	h := &Header{
 		Type32: uint32(t),
+		Id:     crypto.RandUint32(),
 	}
 	return h.SetBody(body)
 }
@@ -117,6 +119,11 @@ func (h *Header) IsResponse() bool {
 // IsFromNet checks if the FromNet flag is set
 func (h *Header) IsFromNet() bool {
 	return h.CheckFlag(FromNet)
+}
+
+// IsToNet checks if the FromNet flag is set
+func (h *Header) IsToNet() bool {
+	return h.CheckFlag(ToNet)
 }
 
 // SetFlag sets a bit in the flag field
