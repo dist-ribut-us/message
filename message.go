@@ -144,6 +144,11 @@ func (h *Header) BodyString() string {
 	return string(h.Body)
 }
 
+// Unmarshal the body of the header
+func (h *Header) Unmarshal(pb proto.Message) error {
+	return proto.Unmarshal(h.Body, pb)
+}
+
 // SetAddr sets the underlying Addrpb struct in the Header
 func (h *Header) SetAddr(addr *rnet.Addr) *Header {
 	h.Addrpb = FromAddr(addr)
