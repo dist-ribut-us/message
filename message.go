@@ -172,7 +172,28 @@ func (h *Header) GetAddr() *rnet.Addr {
 	return h.Addrpb.GetAddr()
 }
 
+// UnmarshalAddrpb unmarshals a buffer to an Addrpb. If there is an error it is
+// logged and a nil value is returned.
+func UnmarshalAddrpb(buf []byte) *Addrpb {
+	a := &Addrpb{}
+	err := proto.Unmarshal(buf, a)
+	if log.Error(err) {
+		return nil
+	}
+	return a
+}
+
 // GetAddr returns the Addrpb as an rnet.Addr
 func (a *Addrpb) GetAddr() *rnet.Addr {
 	return rnet.NewAddr(a.Ip, int(a.Port), a.Zone)
+}
+
+// Marshal a header to a buffer. If there is an error it is logged and nil is
+// returned.
+func (a *Addrpb) Marshal() []byte {
+	buf, err := proto.Marshal(a)
+	if log.Error(err) {
+		return nil
+	}
+	return buf
 }
