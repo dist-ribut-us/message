@@ -35,6 +35,7 @@ const (
 	AddBeacon
 	GetPubKey
 	Die
+	SessionData
 )
 
 // NewHeader takes a type and a body. See SetBody for valid body types
