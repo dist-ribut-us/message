@@ -36,6 +36,8 @@ const (
 	GetPubKey
 	Die
 	SessionData
+	StaticKey
+	RandomKey
 )
 
 // NewHeader takes a type and a body. See SetBody for valid body types
