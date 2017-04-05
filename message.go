@@ -132,6 +132,11 @@ func (h *Header) SetFlag(flag BitFlag) {
 	h.Flags |= uint32(flag)
 }
 
+// UnsetFlag removes a flag
+func (h *Header) UnsetFlag(flag BitFlag) {
+	h.Flags ^= uint32(flag)
+}
+
 // BodyToUint32 uses dist.ribut.us/serial to Unmarshal the body.
 func (h *Header) BodyToUint32() uint32 {
 	if len(h.Body) < 4 {
