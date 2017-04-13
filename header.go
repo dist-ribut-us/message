@@ -40,6 +40,14 @@ const (
 	RandomKey
 )
 
+// Services
+const (
+	BeaconService  uint32 = 19860714
+	OverlayService uint32 = 4200394536
+	PoolService    uint32 = 1111111111
+	DHTService     uint32 = 2864974
+)
+
 // NewHeader takes a type and a body. See SetBody for valid body types
 func NewHeader(t Type, body interface{}) *Header {
 	h := &Header{
