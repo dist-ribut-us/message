@@ -78,11 +78,11 @@ func (h *Header) Marshal() []byte {
 	return buf
 }
 
-// SetBody takes various typesand tries to set the Body field. If body is nil,
+// SetBody takes various types and tries to set the Body field. If body is nil,
 // that will set the body to nil. If body is a []byte, that will be set on the
-// body. If it is a string, it will be case to []byte. If the body is a
+// body. If it is a string, it will be cast to []byte. If the body is a
 // proto.Message it will be marshalled and the serialized data will be used. If
-// it is a uint32, dist.ribut.us/serail will be used to marshal the value into
+// it is a uint32, dist.ribut.us/serial will be used to marshal the value into
 // body.
 func (h *Header) SetBody(body interface{}) *Header {
 	if body == nil {
