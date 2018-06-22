@@ -40,12 +40,14 @@ const (
 	RandomKey
 )
 
+// ServiceTypeOffset claims the first 1024 values are reserved, after that,
+// values are specific to the service handling them.
+const ServiceTypeOffset = 1024
+
 // Services
 const (
-	BeaconService  uint32 = 19860714
-	OverlayService uint32 = 4200394536
-	PoolService    uint32 = 1111111111
-	DHTService     uint32 = 2864974
+	BeaconService uint32 = 19860714
+	PoolService   uint32 = 1111111111
 )
 
 // NewHeader takes a type and a body. See SetBody for valid body types
